@@ -1,0 +1,24 @@
+version: '2'
+services:
+
+
+  # Nginx
+  nginx:
+    image: jsanweb/leafindex-nginx
+    container_name: nginx
+    restart: always
+    volumes_from:
+      - app
+    links:
+      - app
+    ports:
+      - "80:80"
+
+
+  # Application
+  app:
+    image: jsanweb/leafindex-app
+    container_name: app
+    restart: always
+    volumes:
+      - ./logs:/app/logs

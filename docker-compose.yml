@@ -1,0 +1,34 @@
+version: '2'
+services:
+
+
+  # Nginx
+  nginx:
+    build: ./deploy/nginx
+    image: jsanweb/leafindex-nginx
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/conf/nginx.conf
+    volumes_from:
+      - app
+    links:
+      - app
+    ports:
+      - "80:80"
+
+
+  # Application
+  app:
+    build: ./app
+    image: jsanweb/leafindex-app
+    container_name: app
+    restart: always
+    volumes:
+      - ./logs:/app/logs
+      - ./app:/app
+    environment:
+      DEBUG: 'True'
+    tty: true
+    stdin_open: true
+    command: python run.py
